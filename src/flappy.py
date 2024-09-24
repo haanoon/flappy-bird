@@ -15,7 +15,7 @@ from .entities import (
     WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
-
+from .tap import is_tap_event
 
 class Flappy:
     def __init__(self):
@@ -55,7 +55,7 @@ class Flappy:
         while True:
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
+                if is_tap_event(event):
                     return
 
             self.background.tick()
@@ -74,13 +74,7 @@ class Flappy:
             pygame.quit()
             sys.exit()
 
-    def is_tap_event(self, event):
-        m_left, _, _ = pygame.mouse.get_pressed()
-        space_or_up = event.type == KEYDOWN and (
-            event.key == K_SPACE or event.key == K_UP
-        )
-        screen_tap = event.type == pygame.FINGERDOWN
-        return m_left or space_or_up or screen_tap
+    
 
     async def play(self):
         self.score.reset()
@@ -96,7 +90,7 @@ class Flappy:
 
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
+                if is_tap_event(event):
                     self.player.flap()
 
             self.background.tick()
@@ -119,7 +113,7 @@ class Flappy:
         while True:
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
+                if is_tap_event(event):
                     if self.player.y + self.player.h >= self.floor.y - 1:
                         return
 
